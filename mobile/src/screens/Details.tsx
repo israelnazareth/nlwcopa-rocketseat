@@ -62,7 +62,7 @@ export function Details() {
   }
 
   return (
-    <VStack flex={1} bgColor="gray.900">
+    <VStack flex={1} bgColor="gray.900" mb={6}>
       <Header
         title={poolDetails.title}
         showBackButton

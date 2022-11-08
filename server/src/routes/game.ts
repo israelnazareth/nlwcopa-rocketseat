@@ -37,4 +37,30 @@ export async function gameRoutes(fastify: FastifyInstance) {
       })
     }
   })
+
+  fastify.get('/pools/:id/games/count', { onRequest: [authenticate] }, async (request) => {
+    const count = await prisma.game.count()
+
+    return { count }
+  })
+
+  fastify.post('/pools/:id/games', { onRequest: [authenticate] }, async (request, reply) => {
+    const createPoolBody = z.object({
+      date: z.string(),
+      firstTeamCountryCode: z.string(),
+      secondTeamCountryCode: z.string(),
+    })
+
+    const { date, firstTeamCountryCode, secondTeamCountryCode } = createPoolBody.parse(request.body)
+
+    await prisma.game.create({
+      data: {
+        date,
+        firstTeamCountryCode,
+        secondTeamCountryCode,
+      }
+    })
+
+    return reply.status(201).send({ message: 'Created game!' })
+  })
 }

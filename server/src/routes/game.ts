@@ -5,6 +5,12 @@ import { authenticate } from "../plugins/authenticate"
 import { Prisma } from "@prisma/client"
 
 export async function gameRoutes(fastify: FastifyInstance) {
+  fastify.get('/pools/:id/games/count', { onRequest: [authenticate] }, async (request) => {
+    const count = await prisma.game.count()
+
+    return { count }
+  })
+
   fastify.get('/pools/:id/games', { onRequest: [authenticate] }, async (request) => {
     const getPoolParams = z.object({
       id: z.string(),
@@ -14,7 +20,7 @@ export async function gameRoutes(fastify: FastifyInstance) {
 
     const games = await prisma.game.findMany({
       orderBy: {
-        date: 'desc',
+        date: 'asc',
       },
       include: {
         guesses: {
@@ -37,12 +43,6 @@ export async function gameRoutes(fastify: FastifyInstance) {
         }
       })
     }
-  })
-
-  fastify.get('/pools/:id/games/count', { onRequest: [authenticate] }, async (request) => {
-    const count = await prisma.game.count()
-
-    return { count }
   })
 
   fastify.post('/pools/:id/games', { onRequest: [authenticate] }, async (request, reply) => {
@@ -68,17 +68,25 @@ export async function gameRoutes(fastify: FastifyInstance) {
   fastify.put('/pools/:id/games/:id', { onRequest: [authenticate] }, async (request, reply) => {
     try {
       const idGameParams = z.object({ id: z.string() });
-      const dateGameBody = z.object({ date: z.string() })
+      const dateGameBody = z.object({
+        date: z.string(),
+        firstTeamCountryCode: z.string(),
+        secondTeamCountryCode: z.string()
+      })
 
       const { id } = idGameParams.parse(request.params)
-      const { date } = dateGameBody.parse(request.body)
+      const { date, firstTeamCountryCode, secondTeamCountryCode } = dateGameBody.parse(request.body)
       
       await prisma.game.update({
         where: { id },
-        data: { date }
+        data: {
+          date,
+          firstTeamCountryCode,
+          secondTeamCountryCode
+        }
       })
 
-      return reply.status(200).send({ message: 'Date game updated!' })
+      return reply.status(200).send({ message: 'Game updated!' })
 
     } catch (err) {
       if (err instanceof Prisma.PrismaClientKnownRequestError) {

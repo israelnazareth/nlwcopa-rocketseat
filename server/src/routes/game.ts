@@ -2,6 +2,7 @@ import { prisma } from "../lib/prisma"
 import { FastifyInstance } from "fastify"
 import { z } from "zod"
 import { authenticate } from "../plugins/authenticate"
+import { Prisma } from "@prisma/client"
 
 export async function gameRoutes(fastify: FastifyInstance) {
   fastify.get('/pools/:id/games', { onRequest: [authenticate] }, async (request) => {
@@ -62,5 +63,27 @@ export async function gameRoutes(fastify: FastifyInstance) {
     })
 
     return reply.status(201).send({ message: 'Created game!' })
+  })
+
+  fastify.put('/pools/:id/games/:id', { onRequest: [authenticate] }, async (request, reply) => {
+    try {
+      const idGameParams = z.object({ id: z.string() });
+      const dateGameBody = z.object({ date: z.string() })
+
+      const { id } = idGameParams.parse(request.params)
+      const { date } = dateGameBody.parse(request.body)
+      
+      const response = await prisma.game.update({
+        where: { id },
+        data: { date }
+      })
+
+      return reply.status(200).send({ message: 'Date game updated!' })
+
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        if (err.code === 'P2025') throw { message: 'Game not found!' }
+      }
+    }
   })
 }

@@ -65,7 +65,7 @@ export function New() {
           textAlign="center"
           my={8}
         >
-          Crie seu próprio bolão da copa e compartilhe entre amigos!
+          Crie seu próprio bolão da copa{'\n'} e compartilhe entre amigos!
         </Heading>
 
         <Input

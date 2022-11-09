@@ -73,7 +73,7 @@ export async function gameRoutes(fastify: FastifyInstance) {
       const { id } = idGameParams.parse(request.params)
       const { date } = dateGameBody.parse(request.body)
       
-      const response = await prisma.game.update({
+      await prisma.game.update({
         where: { id },
         data: { date }
       })
@@ -84,6 +84,25 @@ export async function gameRoutes(fastify: FastifyInstance) {
       if (err instanceof Prisma.PrismaClientKnownRequestError) {
         if (err.code === 'P2025') throw { message: 'Game not found!' }
       }
+    }
+  })
+
+  fastify.delete('/games/:id', { onRequest: [authenticate] }, async (request, reply) => {
+    try {
+      const idGameParams = z.object({ id: z.string() });
+
+      const { id } = idGameParams.parse(request.params)
+      
+      const game = await prisma.game.delete({
+        where: { id },
+      })
+
+      return reply.status(200).send({ message: 'Game deleted!' })
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        if (err.code === 'P2025') throw { message: 'Game not found!' }
+      }
+      throw err
     }
   })
 }

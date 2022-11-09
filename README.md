@@ -43,7 +43,7 @@
 
 <p align="center">
   <a href= "https://www.linkedin.com/in/israelnazareth/"><img alt="perfil israel nazareth" src="https://img.shields.io/static/v1?logoWidth=15&logoColor=0A66C2&logo=LinkedIn&label=LinkedIn&message=Israel Nazareth&color=0A66C2"></a>
-  <a href= "[@raeldotjs](https://instagram.com/raeldotjs)"><img alt="perfil instagram israel nazareth" src="https://img.shields.io/static/v1?logoWidth=15&logoColor=E4405F&logo=Instagram&label=Instagram&message=@raeldotjs&color=E4405F"></a>
+  <a href= "https://instagram.com/raeldotjs"><img alt="perfil instagram israel nazareth" src="https://img.shields.io/static/v1?logoWidth=15&logoColor=E4405F&logo=Instagram&label=Instagram&message=@raeldotjs&color=E4405F"></a>
   
   
 </p>

@@ -3,8 +3,9 @@ import appPreviewImg from "../assets/app-nlw-copa-preview.png";
 import usersAvatarsImg from "../assets/users-avatar-example.png";
 import logoImg from "../assets/logo.svg";
 import iconCheckImg from "../assets/icon-check.svg";
-import { api } from "../lib/axios";
 import { FormEvent, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 interface HomeProps {
   poolCount: number;
@@ -14,22 +15,14 @@ interface HomeProps {
 
 export default function Home(props: HomeProps) {
   const [poolTitle, setPoolTitle] = useState("");
+  const [poolsNumber, setPoolsNumber] = useState(2034)
 
   async function createPool(event: FormEvent) {
     event.preventDefault();
 
     try {
-      const response = await api.post("/pools", {
-        title: poolTitle,
-      });
-
-      const { code } = response.data;
-
-      await navigator.clipboard.writeText(code);
-
-      alert('Bolão criado com sucesso, o código foi copiado para a área de transferência!')
-
-      setPoolTitle('')
+      toast.success('Bolão criado com sucesso!')
+      setPoolsNumber(poolsNumber + 1)
     } catch (error) {
       console.log(error);
       alert("Falha ao criar o bolão, tente novamente!");
@@ -48,7 +41,7 @@ export default function Home(props: HomeProps) {
         <div className="mt-10 flex items-center gap-2">
           <Image src={usersAvatarsImg} alt="" quality={100} className="w-[150px]" />
           <strong className="text-gray-100 text-xl">
-            <span className="text-ignite-500">+{props.userCount}</span> pessoas
+            <span className="text-ignite-500">+12.592</span> pessoas
             já estão usando
           </strong>
         </div>
@@ -68,6 +61,7 @@ export default function Home(props: HomeProps) {
           >
             Criar meu bolão
           </button>
+          <ToastContainer theme="dark" position="top-center"/>
         </form>
 
         <p className="mt-4 text-sm text-gray-300 leading-relaxed">
@@ -79,7 +73,7 @@ export default function Home(props: HomeProps) {
           <div className="flex items-center gap-6">
             <Image src={iconCheckImg} alt="" />
             <div className="flex flex-col">
-              <span className="font-bold text-2xl">+{props.poolCount}</span>
+              <span className="font-bold text-2xl">+{poolsNumber.toLocaleString('pt-BR')}</span>
               <span>Bolões criados</span>
             </div>
           </div>
@@ -89,7 +83,7 @@ export default function Home(props: HomeProps) {
           <div className="flex items-center gap-6">
             <Image src={iconCheckImg} alt="" />
             <div className="flex flex-col">
-              <span className="font-bold text-2xl">+{props.guessCount}</span>
+              <span className="font-bold text-2xl">+192.847</span>
               <span>Palpites enviados</span>
             </div>
           </div>
@@ -104,21 +98,3 @@ export default function Home(props: HomeProps) {
     </div>
   );
 }
-
-export const getStaticProps = async () => {
-  const [poolCountResponse, guessCountResponse, userCountResponse] =
-    await Promise.all([
-      api.get("pools/count"),
-      api.get("guesses/count"),
-      api.get("users/count"),
-    ]);
-
-  return {
-    props: {
-      poolCount: poolCountResponse.data.count,
-      guessCount: guessCountResponse.data.count,
-      userCount: userCountResponse.data.count,
-    },
-    revalidate: 30
-  };
-};

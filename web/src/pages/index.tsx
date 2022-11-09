@@ -21,7 +21,7 @@ export default function Home(props: HomeProps) {
     event.preventDefault();
 
     try {
-      toast.success('Bolão criado com sucesso!!')
+      toast.success('Bolão criado com sucesso!')
       setPoolsNumber(poolsNumber + 1)
     } catch (error) {
       console.log(error);

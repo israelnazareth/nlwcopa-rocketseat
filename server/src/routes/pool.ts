@@ -179,4 +179,18 @@ export async function poolRoutes(fastify: FastifyInstance) {
 
     return { pool }
   })
+
+  fastify.delete('/pools/:id', { onRequest: [authenticate] }, async (request, reply) => {
+    const getPoolParams = z.object({
+      id: z.string(),
+    })
+
+    const { id } = getPoolParams.parse(request.params)
+
+    await prisma.pool.delete({
+      where: { id }
+    })
+
+    return reply.status(200).send({ message: "Poll deleted!" })
+  })
 }

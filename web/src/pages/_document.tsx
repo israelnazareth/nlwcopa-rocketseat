@@ -6,6 +6,7 @@ export default function Document() {
       <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin='' />
+        <link rel="icon" type="image/x-icon" href="favicon.ico" />
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
         <meta property="og:image" content="https://i.imgur.com/DVOJBlb.png" />
         <meta name="description" content="Landing page para criação de bolão da World Cup 2022" />

@@ -193,4 +193,23 @@ export async function poolRoutes(fastify: FastifyInstance) {
 
     return reply.status(200).send({ message: "Poll deleted!" })
   })
+
+  fastify.put('/pools/:id', { onRequest: [authenticate] }, async (request, reply) => {
+    try {
+      const getPoolParams = z.object({ id: z.string() })
+      const getTitleBody = z.object({ title: z.string() })
+
+      const { id } = getPoolParams.parse(request.params)
+      const { title } = getTitleBody.parse(request.body)
+
+      await prisma.pool.update({
+        where: { id },
+        data: { title }
+      })
+
+      return reply.status(200).send({ message: "Poll updated!" })
+    } catch (error) {
+      throw error
+    }
+  })
 }

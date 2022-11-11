@@ -168,7 +168,7 @@ npm run dev
 Meu nome é Israel, sou desenvolvedor web formado pela [Trybe](https://www.betrybe.com/) sempre em busca de novos conhecimentos e impactar positivamente a vida das pessoas.
 
 -   Email: israel.fab@hotmail.com
--   Portfólio: [israelnazareth.github.io](israelnazareth.github.io)
+-   Portfólio: [israelnazareth.github.io](https://israelnazareth.github.io/)
 -   LinkedIn: [Israel Nazareth](https://www.linkedin.com/in/israelnazareth/)
 
 ## :smile: Agradecimento especial
